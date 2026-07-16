@@ -508,6 +508,31 @@
     position:fixed;
     top:24px; left:24px;
     z-index:50;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .honored-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:13px 20px;
+    cursor:pointer;
+    color:var(--text);
+    font-family:var(--font-mono);
+    font-size:15px;
+    font-weight:500;
+    transition:border-color 0.15s ease, transform 0.15s ease;
+  }
+  .honored-toggle:hover{ border-color:var(--accent-light); transform:translateY(-1px); }
+  .honored-toggle svg{ width:22px; height:22px; flex-shrink:0; }
+  @media (max-width:600px){
+    .honored-toggle .cb-label{ display:none; }
+    .honored-toggle{ padding:13px; }
   }
   .custom-builds-toggle{
     display:inline-flex;
@@ -695,8 +720,47 @@
   }
   .cb-error.open{ display:block; }
 
+  /* ---------- THE HONORED ---------- */
+  .honored-panel{ max-width:640px; }
+  .honored-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+    gap:18px;
+    margin-top:8px;
+  }
+  .honored-card{
+    background:var(--bg-panel-2);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 16px;
+    text-align:center;
+    transition:border-color 0.15s ease, transform 0.15s ease;
+  }
+  .honored-card:hover{ border-color:var(--accent-light); transform:translateY(-2px); }
+  .honored-card img{
+    width:76px; height:76px;
+    border-radius:50%;
+    object-fit:cover;
+    margin:0 auto 12px;
+    display:block;
+    border:2px solid var(--border);
+  }
+  .honored-card .honored-name{
+    font-family:var(--font-display);
+    font-size:16px;
+    margin:0 0 4px;
+  }
+  .honored-card .honored-desc{
+    font-size:13px;
+    color:var(--text-muted);
+    margin:0;
+    line-height:1.4;
+  }
+
   @media (prefers-reduced-motion: reduce){
     .custom-builds-toggle{ transition:none !important; }
+    .honored-toggle{ transition:none !important; }
+    .honored-card{ transition:none !important; }
   }
 </style>
 </head>
@@ -706,6 +770,10 @@
   <button class="custom-builds-toggle" id="custom-builds-toggle" type="button" aria-label="Custom Builds — bespoke app development">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
     <span class="cb-label">Custom Builds</span>
+  </button>
+  <button class="honored-toggle" id="honored-toggle" type="button" aria-label="The Honored — community credits">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 5.9L21 9l-4.5 4.4L17.6 20 12 16.9 6.4 20 7.5 13.4 3 9l6.4-1.1L12 2z"/></svg>
+    <span class="cb-label">The Honored</span>
   </button>
 </div>
 
@@ -930,7 +998,59 @@
   </div>
 </div>
 
+<div class="cb-overlay" id="honored-overlay">
+  <div class="cb-panel honored-panel" role="dialog" aria-modal="true" aria-labelledby="honored-heading">
+    <button class="cb-close" id="honored-close" type="button" aria-label="Close">&times;</button>
+
+    <p class="eyebrow">The Honored</p>
+    <h2 id="honored-heading">A few people who've genuinely helped</h2>
+    <p class="cb-sub">Honoring those who've put in real time and effort to make JackalNode better.</p>
+
+    <div class="honored-grid">
+      <div class="honored-card">
+        <img src="honored/cautionheavy.png" alt="CautionHeavy">
+        <p class="honored-name">CautionHeavy</p>
+        <p class="honored-desc">Windows testing</p>
+      </div>
+      <div class="honored-card">
+        <img src="honored/mrselfdestruct.png" alt="MrSelfDestruct">
+        <p class="honored-name">MrSelfDestruct</p>
+        <p class="honored-desc">Windows testing and exposure</p>
+      </div>
+      <div class="honored-card">
+        <img src="honored/monkeyshadow.png" alt="MonkeyShadow">
+        <p class="honored-name">MonkeyShadow</p>
+        <p class="honored-desc">Architectural guidance</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+  (function(){
+    var overlay = document.getElementById('honored-overlay');
+    var openBtn = document.getElementById('honored-toggle');
+    var closeBtn = document.getElementById('honored-close');
+
+    function openModal(){
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e){
+      if(e.target === overlay){ closeModal(); }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && overlay.classList.contains('open')){ closeModal(); }
+    });
+  })();
+
   (function(){
     var overlay = document.getElementById('cb-overlay');
     var openBtn = document.getElementById('custom-builds-toggle');
