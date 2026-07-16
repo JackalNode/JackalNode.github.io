@@ -385,6 +385,16 @@
     font-size:13px;
   }
   footer .links a:hover{ color:var(--accent-light); }
+  .footer-link-btn{
+    background:none;
+    border:none;
+    padding:0;
+    color:inherit;
+    font-family:var(--font-mono);
+    font-size:13px;
+    cursor:pointer;
+  }
+  .footer-link-btn:hover{ color:var(--accent-light); }
 
   :root[data-theme="light"]{
     --bg:#f4f5fa;
@@ -757,6 +767,43 @@
     line-height:1.4;
   }
 
+  /* ---------- LICENCE MODAL ---------- */
+  .licence-panel{ max-width:640px; max-height:80vh; overflow-y:auto; }
+  .licence-body{ font-size:14px; line-height:1.65; color:var(--text); }
+  .licence-body h2{
+    font-family:var(--font-display);
+    font-size:22px;
+    margin:0 0 4px;
+    padding-right:30px;
+  }
+  .licence-body .licence-meta{
+    color:var(--text-muted);
+    font-size:13px;
+    margin:0 0 22px;
+  }
+  .licence-body h3{
+    font-family:var(--font-mono);
+    font-size:14px;
+    color:var(--accent-light);
+    margin:26px 0 8px;
+  }
+  .licence-body h3:first-of-type{ margin-top:0; }
+  .licence-body p{ margin:0 0 12px; }
+  .licence-body ul{ margin:0 0 12px; padding-left:20px; }
+  .licence-body li{ margin-bottom:6px; }
+  .licence-body strong{ color:var(--accent-light); }
+  .licence-body hr{
+    border:none;
+    border-top:1px solid var(--border);
+    margin:22px 0;
+  }
+  .licence-footer-note{
+    font-size:12px;
+    color:var(--text-muted);
+    font-style:italic;
+    margin-top:18px;
+  }
+
   @media (prefers-reduced-motion: reduce){
     .custom-builds-toggle{ transition:none !important; }
     .honored-toggle{ transition:none !important; }
@@ -908,6 +955,7 @@
       <a href="https://ko-fi.com/jackalnode" target="_blank" rel="noopener">Ko-fi</a>
       <a href="https://discord.gg/AGzHEzTAyx" target="_blank" rel="noopener">Discord</a>
       <a href="https://github.com/JackalNode" target="_blank" rel="noopener">GitHub</a>
+      <button type="button" id="licence-toggle" class="footer-link-btn">Licence</button>
     </div>
     <p>JackalNode — free Windows tools, built by one dev. © 2026</p>
   </div>
@@ -1026,11 +1074,79 @@
   </div>
 </div>
 
+<div class="cb-overlay" id="licence-overlay">
+  <div class="cb-panel licence-panel" role="dialog" aria-modal="true" aria-labelledby="licence-heading">
+    <button class="cb-close" id="licence-close" type="button" aria-label="Close">&times;</button>
+    <div class="licence-body">
+      <h2 id="licence-heading">JackalNode — Master Licence Terms (v1.0)</h2>
+      <p class="licence-meta">Plain English. This is the licence for JackalNode's free apps: StartGuard, PingGuard, and any future free app in the pipeline.</p>
+
+      <h3>1. What this covers</h3>
+      <p>This licence applies to any JackalNode application distributed for free (currently StartGuard and PingGuard). It does not cover RouteGuard, or any future paid product — those have their own separate terms.</p>
+
+      <h3>2. You can</h3>
+      <ul>
+        <li>Use the app for free, forever, with full features. There is no paid tier, no unlockable features, no nag screens.</li>
+        <li>Use it for personal use, with no restrictions.</li>
+        <li>Use it for a small business — defined here as under 10 employees or under £100,000 annual revenue — with no restrictions.</li>
+        <li>Support the project voluntarily via <a href="https://ko-fi.com/jackalnode" target="_blank" rel="noopener">Ko-fi</a>. Donating unlocks nothing extra — it's a thank-you, not a purchase.</li>
+      </ul>
+
+      <h3>3. You can't</h3>
+      <ul>
+        <li>Resell the app, or any part of it, for money.</li>
+        <li>Repackage or rebrand the app as your own product ("white-labelling").</li>
+        <li>Use the app as part of a larger organisation's operations if that organisation is above the small-business threshold above, without written permission first (just email and ask).</li>
+        <li>Claim you wrote it, or remove/alter the JackalNode branding and attribution.</li>
+      </ul>
+
+      <h3>4. No warranty</h3>
+      <p>This software is provided as-is. I'm a solo developer building this in my own time. I'll do my best to fix bugs and keep things working, but I can't promise the software is fault-free, and I'm not liable for any damage or loss caused by using it. Use at your own risk, same as any free software.</p>
+
+      <h3>5. Updates</h3>
+      <p>Apps auto-check for updates on launch. Nothing installs silently — you always choose whether to update.</p>
+
+      <h3>6. Governing law</h3>
+      <p>This licence is governed by the laws of South Africa.</p>
+
+      <h3>7. Contact</h3>
+      <p>Questions, permission requests, or anything else: <strong>jackalnode@gmail.com</strong></p>
+
+      <hr>
+      <p class="licence-footer-note">Last updated: 16 July 2026</p>
+    </div>
+  </div>
+</div>
+
 <script>
   (function(){
     var overlay = document.getElementById('honored-overlay');
     var openBtn = document.getElementById('honored-toggle');
     var closeBtn = document.getElementById('honored-close');
+
+    function openModal(){
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e){
+      if(e.target === overlay){ closeModal(); }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && overlay.classList.contains('open')){ closeModal(); }
+    });
+  })();
+
+  (function(){
+    var overlay = document.getElementById('licence-overlay');
+    var openBtn = document.getElementById('licence-toggle');
+    var closeBtn = document.getElementById('licence-close');
 
     function openModal(){
       overlay.classList.add('open');
