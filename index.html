@@ -814,7 +814,70 @@
     margin-top:18px;
   }
 
+
+  /* ---------- PAID VPN BUTTON (RouteGuard) ---------- */
+  .rg-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--bg-panel);
+    border:2px solid var(--accent-light);
+    border-radius:999px;
+    padding:12px 20px;
+    cursor:pointer;
+    color:var(--text);
+    font-family:var(--font-mono);
+    font-size:15px;
+    font-weight:500;
+    transition:border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .rg-toggle:hover{ transform:translateY(-1px); box-shadow:0 0 0 6px rgba(76,76,255,0.18); }
+  .rg-head{ display:flex; align-items:center; gap:14px; margin:0 0 6px; padding-right:30px; }
+  .rg-head img{ width:52px; height:52px; flex-shrink:0; }
+  .rg-head h2{ margin:0; padding-right:0; }
+  .rg-short{ display:none; }
+  /* Phones: just "VPN", short like the spanner and star */
+  @media (max-width:600px){
+    .rg-toggle{ padding:12px 13px; }
+    .rg-toggle .rg-long{ display:none; }
+    .rg-toggle .rg-short{ display:inline; }
+  }
+
+  /* Right-hand stack: Light/Dark on top, The Honored underneath */
+  .theme-toggle-wrap{ flex-direction:column; align-items:flex-end; gap:12px; }
+  .theme-row{ display:flex; align-items:center; gap:14px; }
+  @media (max-width:600px){
+    .try-me{ display:none !important; }
+    .theme-toggle{ padding:13px; }
+    .theme-toggle .toggle-label{ display:none; }
+  }
+
+  .rg-panel h3{
+    font-family:var(--font-mono); font-size:13px; font-weight:700;
+    letter-spacing:0.12em; text-transform:uppercase; color:var(--accent-light);
+    margin:22px 0 8px;
+  }
+  .rg-panel ul{ margin:0; padding-left:20px; font-size:14px; line-height:1.6; }
+  .rg-panel li{ margin-bottom:6px; }
+  .rg-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+  .rg-actions .btn{ justify-content:center; }
+  .btn-outline{
+    background:transparent; color:var(--text);
+    border:1px solid var(--border-strong);
+  }
+  .btn-outline:hover{ border-color:var(--accent-light); }
+  .rg-legal{
+    margin:22px 0 0; padding-top:14px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--text-muted); text-align:center;
+  }
+  .rg-legal a{ text-decoration:underline; }
+  .rg-legal a:hover{ color:var(--text); }
+  @media (max-width:600px){
+    .cb-panel.rg-panel{ padding:28px 20px; }
+    .rg-actions .btn{ flex:1 1 100%; }
+  }
   @media (prefers-reduced-motion: reduce){
+    .rg-toggle{ transition:none !important; }
     .custom-builds-toggle{ transition:none !important; }
     .honored-toggle{ transition:none !important; }
     .honored-card{ transition:none !important; }
@@ -828,18 +891,24 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
     <span class="cb-label">Custom Builds</span>
   </button>
-  <button class="honored-toggle" id="honored-toggle" type="button" aria-label="The Honored — community credits">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 5.9L21 9l-4.5 4.4L17.6 20 12 16.9 6.4 20 7.5 13.4 3 9l6.4-1.1L12 2z"/></svg>
-    <span class="cb-label">The Honored</span>
+  <button class="rg-toggle" id="rg-toggle" type="button" aria-label="Paid VPN and ad blocker">
+    <span class="rg-long">Paid VPN + Ad Block</span>
+    <span class="rg-short">VPN</span>
   </button>
 </div>
 
 <div class="theme-toggle-wrap">
+  <div class="theme-row">
   <span class="try-me" id="try-me" aria-hidden="true">Try me &rarr;</span>
   <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light and dark theme">
     <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/></svg>
     <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
     <span class="toggle-label" id="toggle-label">Dark</span>
+  </button>
+  </div>
+  <button class="honored-toggle" id="honored-toggle" type="button" aria-label="The Honored — community credits">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 5.9L21 9l-4.5 4.4L17.6 20 12 16.9 6.4 20 7.5 13.4 3 9l6.4-1.1L12 2z"/></svg>
+    <span class="cb-label">The Honored</span>
   </button>
 </div>
 
@@ -851,6 +920,7 @@
     <p class="wordmark">Jackal<span class="word">Node</span></p>
     <h1>Putting <span class="word">CONTROL</span> back in <span class="word">YOUR</span> hands</h1>
     <p class="sub">JackalNode builds free, full-featured Windows tools for gamers and everyday PC users. No paywalls. No upsells. No bloat. Ever.</p>
+    <p class="hero-note">Custom Builds and the VPN are separate paid services, not part of the free apps.</p>
     <p class="hero-note">This page has a light/dark switch too — top right. Same idea as the apps.</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="#apps">See the apps ↓</a>
@@ -952,7 +1022,7 @@
       <a class="support-card" href="https://github.com/JackalNode" target="_blank" rel="noopener">
         <div class="icon">⌥</div>
         <h3>View the source</h3>
-        <p>Every app is open on GitHub.</p>
+        <p>Every free app is open on GitHub.</p>
       </a>
     </div>
   </div>
@@ -1077,6 +1147,51 @@
   </div>
 </div>
 
+<div class="cb-overlay" id="rg-overlay">
+  <div class="cb-panel rg-panel" role="dialog" aria-modal="true" aria-labelledby="rg-heading">
+    <button class="cb-close" id="rg-close" type="button" aria-label="Close">&times;</button>
+
+    <div class="rg-head">
+      <img src="data:image/png;base64,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" alt="">
+      <h2 id="rg-heading">RouteGuard</h2>
+    </div>
+    <p class="cb-sub">Your own VPN server, set up for you.</p>
+
+    <p class="cb-block">RouteGuard gives you your own private VPN: a server that belongs to you, not to a VPN company, and nobody else shares it. While you're connected, what you do online is scrambled so your Wi-Fi or internet provider can't see which sites you visit, and ads and trackers are blocked before they reach you. RouteGuard never sees your traffic.</p>
+
+    <h3>Good for</h3>
+    <ul>
+      <li>Café, airport and hotel Wi-Fi, where you don't know who's watching the network</li>
+      <li>Keeping your browsing private from your internet provider</li>
+      <li>Fewer ads and trackers on the sites and apps you use every day</li>
+    </ul>
+
+    <h3>What it costs</h3>
+    <ul>
+      <li>RouteGuard: US$3 per month or US$30 per year, paid through PayPal. Cancel any time.</li>
+      <li>Your server: billed separately by your cloud provider, on your own account.</li>
+    </ul>
+
+    <h3>What you need</h3>
+    <ul>
+      <li>A Windows PC</li>
+      <li>Step-by-step guides in the app walk you through everything else, including setting up your server.</li>
+    </ul>
+
+    <h3>Good to know</h3>
+    <ul>
+      <li>Streaming services often block cloud-server IP addresses, so RouteGuard isn't a way to unblock streaming.</li>
+      <li>The installer isn't code-signed yet, so Windows may show "Windows protected your PC". Click "More info", then "Run anyway".</li>
+    </ul>
+
+    <div class="rg-actions">
+      <a class="btn btn-primary" href="https://jackalnode.itch.io/routeguard" target="_blank" rel="noopener">Download for Windows</a>
+    </div>
+
+    <p class="rg-legal"><a href="https://routeguard-licence-backend.onrender.com/terms" target="_blank" rel="noopener">Terms of Service</a> · <a href="https://routeguard-licence-backend.onrender.com/privacy" target="_blank" rel="noopener">Privacy Policy</a></p>
+  </div>
+</div>
+
 <div class="cb-overlay" id="licence-overlay">
   <div class="cb-panel licence-panel" role="dialog" aria-modal="true" aria-labelledby="licence-heading">
     <button class="cb-close" id="licence-close" type="button" aria-label="Close">&times;</button>
@@ -1122,6 +1237,30 @@
 </div>
 
 <script>
+  (function(){
+    var overlay = document.getElementById('rg-overlay');
+    var openBtn = document.getElementById('rg-toggle');
+    var closeBtn = document.getElementById('rg-close');
+
+    function openModal(){
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e){
+      if(e.target === overlay){ closeModal(); }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && overlay.classList.contains('open')){ closeModal(); }
+    });
+  })();
+
   (function(){
     var overlay = document.getElementById('honored-overlay');
     var openBtn = document.getElementById('honored-toggle');
